@@ -1,0 +1,51 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:5.0.2
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - /database:/data/mongodb
+    networks:
+      - local
+
+  client:
+    depends_on:
+      - mongodb
+      - server
+    build: client
+    environment:
+      - API_URL=http://server:3000/api
+    ports:
+      - '8080:8080'
+    networks:
+      - local
+    external_links:
+      - server
+
+  server:
+    depends_on:
+      - mongodb
+    build: server
+    environment:
+      - PORT=3000
+      - BASE_API_URL=api
+      - CLIENT_URL=http://localhost:8080
+      - JWT_SECRET=update_your_JWT_secret
+      - MONGO_URI=mongodb://mongodb:27017
+    # ports:
+    #   - '3000:3000'
+    networks:
+      - local
+    external_links:
+      - mongodb
+
+volumes:
+  db:
+
+
+networks:
+  local:
+    # Use a custom driver
+    driver: bridge
