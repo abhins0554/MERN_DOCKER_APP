@@ -24,6 +24,16 @@ app.use(cors());
 
 setupDB();
 require('./config/passport')(app);
+
+app.use((req, res, next) => {
+  try {
+    console.log(req.originalUrl);
+    next();
+  } catch (error) {
+    next();
+  }
+})
+
 app.use(routes);
 
 const server = app.listen(port, () => {

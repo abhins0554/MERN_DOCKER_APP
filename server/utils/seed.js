@@ -6,8 +6,8 @@ const { ROLES } = require('../constants');
 const User = require('../models/user');
 
 const args = process.argv.slice(2);
-const email = args[0];
-const password = args[1];
+const email = args[0]  || "admin@admin.com";
+const password = args[1]  || "admin@admin.com";
 
 const seedDB = async () => {
   try {
