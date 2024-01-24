@@ -18,8 +18,10 @@ RUN mv .env.example .env
 # Build the client for production
 RUN npm run build
 
+RUN npm install -g serve
+
 # Expose port 8080 for the client
-EXPOSE 8080
+EXPOSE 3000
 
 # Start the client
-CMD [ "npm", "run", "dev" ]
+CMD [ "serve", "-s", "dist" ]
